@@ -1,0 +1,28 @@
+{
+  "name": "fastify-typescript-auth-starter",
+  "version": "1.0.0",
+  "description": "basic rest api with auth starter",
+  "main": "src/app.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "format": "prettier --write ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^5.4.0",
+    "fastify-plugin": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.4",
+    "fastify-tsconfig": "^3.0.0",
+    "prettier": "^3.6.1",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "keywords": []
+}
