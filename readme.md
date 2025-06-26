@@ -16,9 +16,8 @@ A production-ready Fastify REST API starter with TypeScript, SQLite, and Kysely 
 
 ### Prerequisites
 
-- Node.js 18+
-- npm or yarn
-- SQLite3
+- Node.js 20.10+
+- npm
 
 ### Installation
 
@@ -30,7 +29,7 @@ cd fastify-starter
 # Install dependencies
 npm install
 
-# Set up environment variables
+# create a .env file (see below)
 ```
 
 ### Development
@@ -111,8 +110,7 @@ Create a `.env` file in the root directory with the following variables:
 ```env
 NODE_ENV=development
 PORT=3000
-SQLITE_PATH=./data/db.sqlite
-JWT_SECRET=your_jwt_secret_here
+SQLITE_PATH=./db.sqlite
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=change_this_password
 ```
@@ -149,7 +147,3 @@ Run tests with coverage:
 ```bash
 npm run test:coverage
 ```
-
-## License
-
-ISC
