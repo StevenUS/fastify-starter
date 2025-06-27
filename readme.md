@@ -1,6 +1,6 @@
 # Fastify TypeScript Starter
 
-A production-ready Fastify REST API starter with TypeScript, SQLite, and Kysely ORM.
+A sightly opinonated Fastify REST API starter with TypeScript, SQLite, and Kysely ORM.
 
 ## Features
 
