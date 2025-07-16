@@ -18,6 +18,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@sinclair/typebox": "^0.34.37",
     "argon2": "^0.43.0",
     "better-sqlite3": "^12.1.1",
     "dotenv": "^16.5.0",

@@ -35,4 +35,4 @@ declare module 'fastify' {
   }
 }
 
-export default fp(dbPlugin);
+export default fp(dbPlugin, { name: 'db-plugin', dependencies: ['env-plugin'] });

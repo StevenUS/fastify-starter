@@ -45,8 +45,7 @@ export default async function userRoutes(fastify: FastifyInstance) {
     async (request: FastifyRequest<{ Params: { name: string } }>, reply: FastifyReply) => {
       try {
         const { name } = request.params;
-        console.log(name);
-        const user = await fastify.userService.findUserByName(request.params.name);
+        const user = await fastify.userService.findUserByName(name);
 
         if (!user) {
           return reply.status(404).send({

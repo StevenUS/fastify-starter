@@ -2,15 +2,27 @@ import { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysel
 
 export interface Database {
   user: UserTable;
+  userSession: UserSessionTable;
 }
 
 export interface UserTable {
-  id: Generated<string>;
+  id: Generated<number>;
   name: string;
   password: string;
   type: ColumnType<number, number | undefined, number | undefined>;
   createdAt: ColumnType<Date, string | undefined, never>;
   disabledAt: ColumnType<Date | null, Date | string | undefined, Date | string | null | undefined>;
+}
+
+export interface UserSessionTable {
+  id: Generated<number>;
+  userId: number;
+  token: string;
+  userAgent: string | null;
+  ipAddress: string | null;
+  createdAt: ColumnType<Date, string | undefined, never>;
+  expiresAt: ColumnType<Date, string | undefined, never>;
+  revokedAt: ColumnType<Date | null, Date | string | undefined, Date | string | null | undefined>;
 }
 
 // You should not use the table schema interfaces directly. Instead, you should
@@ -22,3 +34,7 @@ export interface UserTable {
 export type User = Selectable<UserTable>;
 export type NewUser = Insertable<UserTable>;
 export type UserUpdate = Updateable<UserTable>;
+
+export type UserSession = Selectable<UserSessionTable>;
+export type NewUserSession = Insertable<UserSessionTable>;
+export type UserSessionUpdate = Updateable<UserSessionTable>;

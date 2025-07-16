@@ -147,3 +147,53 @@ Run tests with coverage:
 ```bash
 npm run test:coverage
 ```
+
+## Authentication System
+
+### Overview
+
+The authentication system is built using Fastify and provides secure authentication and session management.
+
+### Features
+
+- **User Authentication**
+  - Username/Password login
+  - Session management
+  - Secure password hashing with Argon2
+  - HTTP-only cookies for token storage
+  - Session expiration and revocation
+
+### API Endpoints
+
+#### Authentication
+
+- `POST /api/auth/login` - Login with username and password
+- `POST /api/auth/logout` - Logout (requires authentication)
+- `GET /api/auth/session` - Get current session info (requires authentication)
+- `GET /api/auth/sessions` - List all active sessions (requires authentication)
+- `POST /api/auth/sessions/revoke` - Revoke a session (requires authentication)
+
+### Environment Variables
+
+| Variable               | Description                           | Default                 |
+| ---------------------- | ------------------------------------- | ----------------------- |
+| `PORT`                 | Port to run the server on             | `3001`                  |
+| `NODE_ENV`             | Environment (development, production) | `development`           |
+| `COOKIE_SECRET`        | Secret for signing cookies            | `your-secret-key`       |
+| `CLIENT_URL`           | URL of the frontend application       | `http://localhost:3000` |
+| `DB_CONNECTION_STRING` | Database connection string            | `./db.sqlite`           |
+
+### Authentication Flow
+
+1. **Login**:
+   - Client sends `POST /api/auth/login` with `{ username, password }`
+   - Server verifies credentials and creates a new session
+   - Server sets an HTTP-only cookie with the session token
+
+2. **Authenticated Requests**:
+   - Client includes the session cookie with each request
+   - Server validates the session on protected routes
+
+3. **Logout**:
+   - Client calls `POST /api/auth/logout`
+   - Server revokes the session and clears the cookie

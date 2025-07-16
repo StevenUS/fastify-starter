@@ -4,7 +4,10 @@ import { fileURLToPath } from 'url';
 import envPlugin from './plugins/env.plugin.js';
 import dbPlugin from './plugins/db.plugin.js';
 import userServicePlugin from './plugins/user.plugin.js';
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/user.routes.js';
+import cookiePlugin from './plugins/cookie.plugin.js';
+import authPlugin from './plugins/auth.plugin.js';
+import authRoutes from './routes/auth.routes.js';
 
 // Create a Fastify instance with typed options
 const app: FastifyInstance = Fastify({
@@ -15,11 +18,14 @@ const app: FastifyInstance = Fastify({
 // Register plugins (order matters)
 await app.register(envPlugin);
 await app.register(dbPlugin);
+await app.register(cookiePlugin);
+await app.register(authPlugin);
 await app.register(userServicePlugin);
 
 // Register routes with type safety
 app.register(root, { prefix: '/api' });
 app.register(userRoutes, { prefix: '/api' });
+app.register(authRoutes, { prefix: '/api' });
 
 // Health check endpoint with response type
 app.get<{ Reply: { status: string } }>('/health', async (_request, _reply) => {

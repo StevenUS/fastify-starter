@@ -13,4 +13,4 @@ declare module 'fastify' {
   }
 }
 
-export default fp(userServicePlugin);
+export default fp(userServicePlugin, { name: 'user-plugin', dependencies: ['db-plugin'] });

@@ -46,7 +46,7 @@ export class UserService {
     }
   }
 
-  async findUserById(id: string) {
+  async findUserById(id: number) {
     try {
       return await this.db
         .selectFrom('user')
@@ -70,7 +70,7 @@ export class UserService {
     }
   }
 
-  async disableUser(id: string) {
+  async disableUser(id: number) {
     try {
       await this.db
         .updateTable('user')

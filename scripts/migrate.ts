@@ -60,7 +60,14 @@ export async function migrate(dbInstance?: Kysely<any>) {
   }
 }
 
+// Add this helper to check if the file is being run directly
+const isMain = () => {
+  const mainModule = process.argv[1];
+  const modulePath = fileURLToPath(import.meta.url);
+  return mainModule === modulePath;
+};
+
 // Optional CLI usage
-if (import.meta.main) {
+if (isMain()) {
   migrate().catch(console.error);
 }
