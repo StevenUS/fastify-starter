@@ -16,9 +16,3 @@ export const UserResponse = Type.Object({
   createdAt: Type.String({ format: 'date-time' }),
   disabledAt: Type.Union([Type.String({ format: 'date-time' }), Type.Null()]),
 });
-
-export const ErrorResponse = Type.Object({
-  statusCode: Type.Number(),
-  error: Type.String(),
-  message: Type.String(),
-});

@@ -1,23 +1,16 @@
-import { FastifyInstance } from 'fastify';
 import { LoginParams } from '../types/auth.js';
 import { SESSION_COOKIE, SESSION_MAX_AGE } from '../config/constants.js';
 import {
-  ErrorResponse,
-  LoginRequest,
   loginSchema,
   logoutSchema,
-  RevokeSessionRequest,
   revokeSessionSchema,
-  SessionRequest,
   sessionSchema,
-  SessionsRequest,
   sessionsSchema,
-  SuccessResponse,
 } from '../schemas/auth.schemas.js';
+import { AppFastifyInstance } from '../types/app-fastify-instance.js';
 
-export default async function authRoutes(fastify: FastifyInstance) {
-  // Login route
-  fastify.post<LoginRequest>(
+export default async function authRoutes(fastify: AppFastifyInstance) {
+  fastify.post(
     '/auth/login',
     {
       schema: loginSchema,
@@ -54,8 +47,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
     },
   );
 
-  // Logout route
-  fastify.post<{ Reply: SuccessResponse | ErrorResponse }>(
+  fastify.post(
     '/auth/logout',
     {
       preValidation: [fastify.authenticate],
@@ -84,7 +76,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
   );
 
   // Get current session
-  fastify.get<SessionRequest>(
+  fastify.get(
     '/auth/session',
     {
       preValidation: [fastify.authenticate],
@@ -123,7 +115,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
   );
 
   // Get all active sessions for current user
-  fastify.get<SessionsRequest>(
+  fastify.get(
     '/auth/sessions',
     {
       preValidation: [fastify.authenticate],
@@ -136,7 +128,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
   );
 
   // Revoke a specific session
-  fastify.post<RevokeSessionRequest>(
+  fastify.post(
     '/auth/sessions/revoke',
     {
       preValidation: [fastify.authenticate],

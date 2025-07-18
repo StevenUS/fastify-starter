@@ -1,16 +1,5 @@
-import { Static, Type } from '@sinclair/typebox';
-
-// ========== Base Types ==========
-const BaseResponse = {
-  error: Type.Object({
-    statusCode: Type.Number(),
-    error: Type.String(),
-    message: Type.String(),
-  }),
-  success: Type.Object({
-    success: Type.Boolean(),
-  }),
-};
+import { Type } from '@sinclair/typebox';
+import { BaseResponse } from './shared.schemas.js';
 
 // ========== Request/Response Bodies ==========
 const Login = {
@@ -90,26 +79,4 @@ export const logoutSchema = {
     401: BaseResponse.error,
     500: BaseResponse.error,
   },
-};
-
-// ========== TypeScript Types ==========
-export type ErrorResponse = Static<typeof BaseResponse.error>;
-export type SuccessResponse = Static<typeof BaseResponse.success>;
-
-export type LoginRequest = {
-  Body: Static<typeof Login.body>;
-  Reply: Static<typeof Login.response> | ErrorResponse;
-};
-
-export type SessionRequest = {
-  Reply: Static<typeof Session.response> | ErrorResponse;
-};
-
-export type SessionsRequest = {
-  Reply: Static<typeof SessionList> | ErrorResponse;
-};
-
-export type RevokeSessionRequest = {
-  Body: Static<typeof RevokeSession.body>;
-  Reply: SuccessResponse | ErrorResponse;
 };

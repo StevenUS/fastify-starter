@@ -1,5 +1,6 @@
 import { AppFastifyInstance } from '../types/app-fastify-instance.js';
-import { GetUserParams, UserResponse, ErrorResponse } from '../schemas/user.schemas.js';
+import { GetUserParams, UserResponse } from '../schemas/user.schemas.js';
+import { BaseResponse } from '../schemas/shared.schemas.js';
 
 export default async function userRoutes(fastify: AppFastifyInstance) {
   fastify.get(
@@ -10,7 +11,7 @@ export default async function userRoutes(fastify: AppFastifyInstance) {
         params: GetUserParams,
         response: {
           200: UserResponse,
-          404: ErrorResponse,
+          404: BaseResponse.error,
         },
       },
     },
