@@ -1,19 +1,21 @@
-import Fastify, { FastifyInstance, FastifyServerOptions } from 'fastify';
-import root from './routes/root.js';
+import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import Fastify, { FastifyServerOptions } from 'fastify';
 import { fileURLToPath } from 'url';
-import envPlugin from './plugins/env.plugin.js';
-import dbPlugin from './plugins/db.plugin.js';
-import userServicePlugin from './plugins/user.plugin.js';
-import userRoutes from './routes/user.routes.js';
-import cookiePlugin from './plugins/cookie.plugin.js';
 import authPlugin from './plugins/auth.plugin.js';
+import cookiePlugin from './plugins/cookie.plugin.js';
+import dbPlugin from './plugins/db.plugin.js';
+import envPlugin from './plugins/env.plugin.js';
+import userServicePlugin from './plugins/user.plugin.js';
 import authRoutes from './routes/auth.routes.js';
+import root from './routes/root.js';
+import userRoutes from './routes/user.routes.js';
+import { AppFastifyInstance } from './types/app-fastify-instance.js';
 
 // Create a Fastify instance with typed options
-const app: FastifyInstance = Fastify({
+const app: AppFastifyInstance = Fastify({
   logger: true,
   disableRequestLogging: process.env.NODE_ENV === 'test',
-} as FastifyServerOptions);
+} as FastifyServerOptions).withTypeProvider<TypeBoxTypeProvider>();
 
 // Register plugins (order matters)
 await app.register(envPlugin);

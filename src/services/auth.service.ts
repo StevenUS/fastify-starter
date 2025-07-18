@@ -36,6 +36,7 @@ export class AuthService {
           token: sessionToken,
           userAgent: userAgent,
           ipAddress: ipAddress,
+          createdAt: new Date().toISOString(),
           expiresAt: expiresAt,
         })
         .returningAll()
@@ -49,7 +50,7 @@ export class AuthService {
 
   async validateSession(token: string): Promise<{ isValid: boolean; session?: UserSession }> {
     try {
-      const now = new Date();
+      const now = new Date().toISOString();
       const session = await this.db
         .selectFrom('userSession')
         .selectAll()
@@ -157,8 +158,8 @@ export class AuthService {
       userId,
       userAgent: session.userAgent,
       ipAddress: session.ipAddress,
-      createdAt: session.createdAt.toISOString(),
-      expiresAt: session.expiresAt.toISOString(),
+      createdAt: new Date(session.createdAt).toISOString(),
+      expiresAt: new Date(session.expiresAt).toISOString(),
       isCurrent: session.id === currentSessionId,
       isActive: !session.revokedAt && new Date(session.expiresAt) > new Date(),
     }));

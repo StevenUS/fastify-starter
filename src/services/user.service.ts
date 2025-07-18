@@ -30,6 +30,7 @@ export class UserService {
             name: userData.name,
             password: hashedPassword,
             type: this.USER_TYPE,
+            createdAt: new Date().toISOString(),
           })
           .returning(['id', 'name', 'type', 'createdAt'])
           .executeTakeFirstOrThrow();

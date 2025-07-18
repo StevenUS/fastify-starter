@@ -10,8 +10,8 @@ export interface UserTable {
   name: string;
   password: string;
   type: ColumnType<number, number | undefined, number | undefined>;
-  createdAt: ColumnType<Date, string | undefined, never>;
-  disabledAt: ColumnType<Date | null, Date | string | undefined, Date | string | null | undefined>;
+  createdAt: ColumnType<string, string | undefined, never>;
+  disabledAt: ColumnType<string | null, string | undefined, string | null | undefined>;
 }
 
 export interface UserSessionTable {
@@ -20,9 +20,9 @@ export interface UserSessionTable {
   token: string;
   userAgent: string | null;
   ipAddress: string | null;
-  createdAt: ColumnType<Date, string | undefined, never>;
-  expiresAt: ColumnType<Date, string | undefined, never>;
-  revokedAt: ColumnType<Date | null, Date | string | undefined, Date | string | null | undefined>;
+  createdAt: ColumnType<string, string | undefined, never>;
+  expiresAt: ColumnType<string, string | undefined, never>;
+  revokedAt: ColumnType<string | null, string | undefined, string | null | undefined>;
 }
 
 // You should not use the table schema interfaces directly. Instead, you should

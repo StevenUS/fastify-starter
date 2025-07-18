@@ -1,4 +1,3 @@
-// test/user.service.test.ts
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import Fastify from 'fastify';

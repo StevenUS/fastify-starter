@@ -72,6 +72,8 @@ src/
 │   └── userRoutes.ts   # User-related routes
 ├── services/           # Business logic
 │   └── user.service.ts # User service
+├── schemas/            # Schemas for request response
+│   └── user.schema.ts  # TypeBox schemas to validate user.service req/res params
 └── types/              # TypeScript type definitions
 ```
 
@@ -79,14 +81,16 @@ src/
 
 ### Dependencies
 
-| Package          | Version | Description                                |
-| ---------------- | ------- | ------------------------------------------ |
-| `argon2`         | ^0.43.0 | Password hashing library                   |
-| `better-sqlite3` | ^12.1.1 | SQLite3 database driver                    |
-| `dotenv`         | ^16.5.0 | Loads environment variables from .env file |
-| `fastify`        | ^5.4.0  | Fast and low overhead web framework        |
-| `fastify-plugin` | ^5.0.1  | Plugin helper for Fastify                  |
-| `kysely`         | ^0.28.2 | TypeScript SQL query builder               |
+| Package                         | Version  | Description                                  |
+| ------------------------------- | -------- | -------------------------------------------- |
+| `argon2`                        | ^0.43.0  | Password hashing library                     |
+| `better-sqlite3`                | ^12.1.1  | SQLite3 database driver                      |
+| `dotenv`                        | ^16.5.0  | Loads environment variables from .env file   |
+| `fastify`                       | ^5.4.0   | Fast and low overhead web framework          |
+| `fastify-plugin`                | ^5.0.1   | Plugin helper for Fastify                    |
+| `@sinclair/typebox`             | ^0.34.38 | TypeBox schema validator                     |
+| `fastify/type-provider-typebox` | ^5.2.0   | Integrates TypeBox as a Fastify TypeProvider |
+| `kysely`                        | ^0.28.2  | TypeScript SQL query builder                 |
 
 ### Dev Dependencies
 
@@ -146,6 +150,36 @@ Run tests with coverage:
 
 ```bash
 npm run test:coverage
+```
+
+## Fastify Type Provider with TypeBox
+
+https://fastify.dev/docs/latest/Reference/Type-Providers/
+
+See here specifically, for extending the fastify app type,
+https://fastify.dev/docs/latest/Reference/Type-Providers/#type-definition-of-fastifyinstance--typeprovider
+
+https://github.com/fastify/fastify-type-provider-typebox
+
+When using the @fastify/type-provider-typebox plugin, schemas become the source of truth for both runtime validation and TypeScript type inference.
+
+Manually defining route generics like this is not required:
+
+```ts
+fastify.get<{
+  Params: { name: string };
+}>('/user/:name', { schema }, handler);
+```
+
+Instead, by defining your params, query, body, and response schemas with TypeBox, Fastify can automatically infer types for request.params, request.query, request.body, and reply.send().
+
+## Kysley date/time notes
+
+For sqlite, dates should be stored as strings in the database.
+If using postgres, the pg driver will handle conversion of date columns to js date objects, and the database date types can be updated as such,
+
+```ts
+createdAt: ColumnType<Date, Date | string | undefined, Date | string | undefined>;
 ```
 
 ## Authentication System

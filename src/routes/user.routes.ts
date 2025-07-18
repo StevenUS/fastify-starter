@@ -1,51 +1,25 @@
-import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { AppFastifyInstance } from '../types/app-fastify-instance.js';
+import { GetUserParams, UserResponse, ErrorResponse } from '../schemas/user.schemas.js';
 
-// Define the request schema
-const getUserSchema = {
-  params: {
-    type: 'object',
-    required: ['name'],
-    properties: {
-      name: {
-        type: 'string',
-        minLength: 3,
-        maxLength: 50,
-        pattern: '^[a-zA-Z0-9_]+$', // Only allow alphanumeric and underscore
-      },
-    },
-  },
-  response: {
-    200: {
-      type: 'object',
-      properties: {
-        id: { type: 'string' },
-        name: { type: 'string' },
-        type: { type: 'number' },
-        createdAt: { type: 'string', format: 'date-time' },
-        disabledAt: { type: ['string', 'null'], format: 'date-time' },
-      },
-    },
-    404: {
-      type: 'object',
-      properties: {
-        statusCode: { type: 'number' },
-        error: { type: 'string' },
-        message: { type: 'string' },
-      },
-    },
-  },
-};
-
-export default async function userRoutes(fastify: FastifyInstance) {
-  fastify.get<{
-    Params: { name: string };
-  }>(
+export default async function userRoutes(fastify: AppFastifyInstance) {
+  fastify.get(
     '/user/:name',
-    { schema: getUserSchema },
-    async (request: FastifyRequest<{ Params: { name: string } }>, reply: FastifyReply) => {
+    {
+      // schemas for the user routes are defined in the src/schemas dir
+      schema: {
+        params: GetUserParams,
+        response: {
+          200: UserResponse,
+          404: ErrorResponse,
+        },
+      },
+    },
+    // The request and reply types are inferred from our fastify-type-provider package
+    async (request, reply) => {
       try {
         const { name } = request.params;
-        const user = await fastify.userService.findUserByName(name);
+        console.log(name);
+        const user = await fastify.userService.findUserByName(request.params.name);
 
         if (!user) {
           return reply.status(404).send({
@@ -56,8 +30,16 @@ export default async function userRoutes(fastify: FastifyInstance) {
         }
 
         // Don't return the password hash
+        // format dates to ISO 8601 strings
         const { password, ...userWithoutPassword } = user;
-        return userWithoutPassword;
+        const userResponse = {
+          ...userWithoutPassword,
+          createdAt: new Date(userWithoutPassword.createdAt).toISOString(),
+          disabledAt: userWithoutPassword.disabledAt
+            ? new Date(userWithoutPassword.disabledAt).toISOString()
+            : null,
+        };
+        return userResponse;
       } catch (error) {
         request.log.error(error);
         reply.status(500).send({
