@@ -41,7 +41,7 @@ export default async function authRoutes(fastify: FastifyInstance) {
 
         return {
           userId: result.userId,
-          expiresAt: result.expiresAt.toISOString(),
+          expiresAt: new Date(result.expiresAt).toISOString(),
         };
       } catch (error) {
         request.log.error(error);
@@ -115,8 +115,8 @@ export default async function authRoutes(fastify: FastifyInstance) {
         userId: session.userId,
         userAgent: session.userAgent,
         ipAddress: session.ipAddress,
-        createdAt: session.createdAt.toISOString(),
-        expiresAt: session.expiresAt.toISOString(),
+        createdAt: new Date(session.createdAt).toISOString(),
+        expiresAt: new Date(session.expiresAt).toISOString(),
         isActive: !session.revokedAt && new Date(session.expiresAt) > new Date(),
       };
     },
